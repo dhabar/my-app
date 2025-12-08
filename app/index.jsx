@@ -1,31 +1,45 @@
+import { View, Text, Image, TouchableOpacity } from 'react-native'
+import ScreenWrapper from '../components/ScreenWrapper'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRouter } from 'expo-router'
-import { useEffect } from 'react'
-import { View, Text } from 'react-native'
-import Animated, { FadeInDown } from 'react-native-reanimated'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const index = () => {
-
+const Welcome = () => {
   const router = useRouter()
-  useEffect(() => {
-    setTimeout(()=>(
-      router.replace('wellcome')
-    ),100)
-    
-    
-  }, [])
-  
-  return (
-    
-      <View className='flex items-center content-center mx-auto  w-full bg-black h-full'>
-    <Animated.Image 
 
-    source={require('../assets/images/splashImage.png')}
-    className='w-64 h-64 mt-96'
-    resizeMode={'contain'}
-    entering={FadeInDown.duration(900).springify()}
-    />
-    </View>
+  const handleStart = async () => {
+    await AsyncStorage.setItem('hasLaunched', 'true')
+    router.replace('/(tabs)/home')
+  }
+
+  return (
+    <ScreenWrapper>
+      <SafeAreaView className="flex-1">
+        <View className="flex items-center mt-24">
+          <Text className="text-white text-[74px] font-bold text-center">Bubbly</Text>
+          <Image
+            className="w-96 h-96"
+            source={require('../assets/images/welcome.png')}
+          />
+        </View>
+
+        <View className="mt-6">
+          <Text className="text-white text-[32px] px-4 text-center">
+            Stay connected with your friends and family
+          </Text>
+        </View>
+
+        <TouchableOpacity
+          className="bg-white p-4 mx-4 mt-10 rounded-full"
+          onPress={handleStart}
+        >
+          <Text className="text-black text-center text-2xl font-semibold ">
+            Get Started
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    </ScreenWrapper>
   )
 }
 
-export default index
+export default Welcome
